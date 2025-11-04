@@ -1,5 +1,7 @@
 'use client';
 
+/*Pagina do Detalhes do TIcket*/
+
 import { useParams, useRouter } from 'next/navigation';
 import { mockTickets, updateTicketStatus, updateTicketLinkedAssets } from '@/lib/mock-tickets';
 import { mockAssets, Asset } from '@/lib/mock-assets';
@@ -8,6 +10,7 @@ import { useState, useEffect } from 'react';
 import { ArrowLeft, X, Plus, ChevronDown } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import emailjs from '@emailjs/browser';
 
 import {
     DropdownMenu,
@@ -122,9 +125,27 @@ export default function TicketDetail() {
 
         let newStatus = ticket.status;
         let successMessage = "";
+        
+        
+
+        
 
         if (statusAction === 'Finalizar') {
             newStatus = 'Finalizado';
+            var templateParams ={
+            name: 'Thais',
+            title: 'Test',
+            email: 'thaisc.carvalho4@gmail.com'
+        }
+            emailjs.send('service_0q9ypfi', 'template_mu5bbce', templateParams,{publicKey: 'BuM9iUlwWs5ST5woS'}).then(
+        (response) => {
+    console.log('SUCCESS!', response.status, response.text);
+         },
+            (error) => {
+            console.log('FAILED...', error);
+            },
+            );
+        
             successMessage = "Ticket finalizado com sucesso!";
         } else if (statusAction === 'Cancelar') {
             newStatus = 'Cancelado';
@@ -533,7 +554,7 @@ export default function TicketDetail() {
                             ></textarea>
                         </div>
                         <div className="flex justify-end space-x-3">
-                            <button
+                            <button 
                                 onClick={closeStatusModal}
                                 className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-50"
                             >
