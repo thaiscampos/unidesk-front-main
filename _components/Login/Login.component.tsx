@@ -26,7 +26,7 @@ export function Login() {
     })
 
     function onSubmit(values: z.infer<typeof formSchema>) {
-        if (values.email === "aristeu@unidesk.com" && values.password === "aristeu123") {
+        if (values.email === "thais@unidesk.com" && values.password === "thais123") {
             router.push("/dashboard")
             toast({
                 variant: "success",
