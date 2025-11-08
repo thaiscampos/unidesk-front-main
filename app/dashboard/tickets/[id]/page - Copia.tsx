@@ -128,49 +128,46 @@ export default function TicketDetail() {
 
   if (statusAction === 'Finalizar') {
     newStatus = 'Finalizado';
-    acao = 'finalizado';
+    acao = "finalizado";
   } else if (statusAction === 'Cancelar') {
     newStatus = 'Cancelado';
-    acao = 'cancelado';
+    acao = "cancelado";
   } else if (statusAction === 'Aguardando Usuário') {
     newStatus = 'Aguardando usuário';
-    acao = 'alterado';
+    acao = "alterado para Aguardando Usuário";
   }
 
   // Atualiza mock
   setTicket({ ...ticket, status: newStatus });
   updateTicketStatus(ticket.ticketNumber, newStatus);
 
-  // ENVIA E-MAIL
-  await fetch('/api/enviar-email', {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+  // ENVIA E-MAIL COM RESEND
+  await fetch("https://api.resend.com/emails", {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: "Bearer re_SUA_CHAVE_AQUI",
+    },
     body: JSON.stringify({
-      ticket: { ...ticket, status: newStatus },
-      acao,
+      from: "UniDesk <no-reply@unidesk.site>",
+      to: [ticket.emailCliente || "suporte@unidesk.site"],
+      subject: `Chamado #${ticket.ticketNumber} ${acao}!`,
+      html: `
+        <h2>Status do Chamado Atualizado</h2>
+        <p><b>#${ticket.ticketNumber}</b> foi <b>${acao}</b>.</p>
+        <p><b>Título:</b> ${ticket.title}</p>
+        <hr>
+        <p><a href="https://unidesk.site/dashboard/tickets/${ticket.ticketNumber}">Ver no sistema</a></p>
+      `,
     }),
   });
 
-  // Comentário opcional
-  if (statusCommentText.trim()) {
-    const author = ticket.assignee || "Suporte de T.I.";
-    const initials = getInitials(author);
-    const newComment: Comment = {
-      id: Date.now().toString(),
-      author,
-      text: statusCommentText,
-      date: new Date().toLocaleDateString('pt-BR'),
-      initials,
-    };
-    setComments([...comments, newComment]);
-  }
-
-  closeStatusModal();
+  // ... resto do seu código original (toast, redirect, etc)
   toast({ variant: "success", title: "Status atualizado!" });
-
   if (newStatus === 'Finalizado' || newStatus === 'Cancelado') {
     router.push('/dashboard/tickets');
   }
+  closeStatusModal();
 };
 
     const addAsset = (asset: Asset) => {
