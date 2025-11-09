@@ -14,12 +14,12 @@ export function LinkSideBar({ title, href, icon, isExpanded }: LinkSideBarProps)
         <Link
             href={href}
             className={cn(
-                "flex items-center gap-3 px-3 py-2 rounded-md hover:bg-secondary-foreground/20 transition-colors",
+                "flex items-center gap-3 px-3 py-2 rounded-md  text-white hover:bg-secondary-foreground/20 transition-colors",
                 !isExpanded && "justify-center"
             )}
         >
             {icon}
-            <span className={cn("text-sm transition-opacity",
+            <span className={cn("text-sm transition-opacity ",
                 isExpanded ? "opacity-100" : "opacity-0 hidden"
             )}>
                 {title}

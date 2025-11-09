@@ -14,7 +14,7 @@ export function Sidebar() {
 
     return (
         <aside className={cn(
-            "h-[calc(100vh-6.5rem)] bg-quaternary border-r p-4 transition-all duration-300",
+            "h-[calc(100vh-4.5rem)]  border-r bg-gradient-to-t from-[#cc1b36] to-black p-4 transition-all duration-300",
             isExpanded ? "w-64" : "w-20"
         )}>
             <div className={cn(
@@ -23,7 +23,7 @@ export function Sidebar() {
             )}>
                 <button
                     onClick={toggleSidebar}
-                    className="p-2 rounded-full hover:bg-secondary-foreground/20"
+                    className="p-2 rounded-full hover:bg-secondary-foreground/20 text-white"
                     aria-label={isExpanded ? "Collapse sidebar" : "Expand sidebar"}
                 >
                     {isExpanded ? (

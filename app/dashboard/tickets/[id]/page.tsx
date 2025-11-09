@@ -267,7 +267,7 @@ export default function TicketDetail() {
     }
 
     return (
-        <div className="h-[calc(100vh-120px)] overflow-y-auto">
+        <div className="h-[calc(100vh-120px)]  overflow-y-auto ">
             <div className="p-6">
                 <div className="flex items-center mb-6">
                     <button onClick={goBack} className="mr-4 hover:text-gray-600">
