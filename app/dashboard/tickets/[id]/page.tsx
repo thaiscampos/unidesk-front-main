@@ -10,7 +10,7 @@ import { useState, useEffect } from 'react';
 import { ArrowLeft, X, Plus, ChevronDown } from 'lucide-react';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from '@/components/ui/dialog';
-import emailjs from '@emailjs/browser';
+
 
 import {
     DropdownMenu,
@@ -46,6 +46,18 @@ export default function TicketDetail() {
     const notebooks = mockAssets.filter(asset => asset.category === 'notebook');
     const monitors = mockAssets.filter(asset => asset.category === 'monitor');
     const headsets = mockAssets.filter(asset => asset.category === 'headset');
+
+ 
+     const sendEmail = async () => {
+    const response = await fetch('/api/', {
+      method: 'POST',
+    });
+
+    const data = await response.json();
+    alert(data.success ? 'E-mail enviado com sucesso!' : 'Erro ao enviar e-mail.');
+    console.log('Resposta:', data);
+  };
+
 
     useEffect(() => {
         if (params.id) {
@@ -137,9 +149,45 @@ export default function TicketDetail() {
     acao = 'alterado';
   }
 
+<<<<<<< HEAD
   // Atualiza mock
   setTicket({ ...ticket, status: newStatus });
   updateTicketStatus(ticket.ticketNumber, newStatus);
+=======
+        if (statusAction === 'Finalizar') {
+            newStatus = 'Finalizado';
+
+            ////Implementacao do EmaiJs
+          /*  var templateParams ={
+            name: 'Thais',
+            title: 'Test',
+            email: 'thaisc.carvalho4@gmail.com'
+        }
+            emailjs.send('service_0q9ypfi', 'template_mu5bbce', templateParams,{publicKey: 'BuM9iUlwWs5ST5woS'}).then(
+        (response) => {
+    console.log('SUCCESS!', response.status, response.text);
+         },
+            (error) => {
+            console.log('FAILED...', error);
+            },
+            );*/
+        
+            successMessage = "Ticket finalizado com sucesso!";
+        } else if (statusAction === 'Cancelar') {
+            
+         
+                
+            
+
+
+
+            newStatus = 'Cancelado';
+            successMessage = "Ticket cancelado com sucesso!";
+        } else if (statusAction === 'Aguardando Usuário') {
+            newStatus = 'Aguardando usuário';
+            successMessage = "Status do ticket alterado para Aguardando Usuário";
+        }
+>>>>>>> upstream/main
 
   // ENVIA E-MAIL
   await fetch('/api/enviar-email', {
@@ -529,13 +577,13 @@ export default function TicketDetail() {
                         </div>
                         <div className="flex justify-end space-x-3">
                             <button 
-                                onClick={closeStatusModal}
+                                onClick={confirmStatusChange}
                                 className="px-4 py-2 rounded-md border border-gray-300 hover:bg-gray-50"
                             >
                                 Cancelar
                             </button>
                             <button
-                                onClick={confirmStatusChange}
+                                onClick={sendEmail}
                                 className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
                             >
                                 Salvar
